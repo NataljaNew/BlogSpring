@@ -1,0 +1,14 @@
+html, body, main {
+    height: 100%;
+}
+body{
+    display: flex;
+    flex-direction: column;
+}
+.message{
+    min-height: 200px;
+}
+#logo{
+    width: 48px;
+    height: auto;
+}
