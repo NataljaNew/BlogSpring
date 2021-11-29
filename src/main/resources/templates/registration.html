@@ -6,59 +6,121 @@
     <title>DogBlog</title>
 </head>
 <body>
-<header class="p-3 bg-dark text-white">
-    <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a class="bg-white" href="#"><img th:src="@{/img/dog.jpg}"></a>
-
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href=blog.html class="nav-link px-2 text-white">Home</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">Blog</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">Contacts</a></li>
-            </ul>
-
-
-            <div class="text-end">
-                <button type="button" class="btn btn-outline-light me-2">Login</button>
-                <button type="button" class="btn btn-warning">Sign-out</button>
-            </div>
+<div class="container">
+    <form method="post" th:object="${userRegistration}" th:action="@{/public/user/create}">
+        <h2 th:text="#{lt.codeacademy.eshop.user.registration.form.title}"></h2>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{lt.codeacademy.eshop.user.registration.form.name}"></label>
+            <input type="text"
+                   class="form-control"
+                   th:field="*{name}"
+                   th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : (${userRegistration.name ne null} ? 'is-valid' : '')">
+            <p th:if="${#fields.hasErrors('name')}"
+               th:errors="*{name}"
+               th:class="invalid-feedback"></p>
         </div>
-    </div>
-</header>
-<div class="container" style="min-height: 100%" >
-    <h1 class="text-center">Registration Form:</h1>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{lt.codeacademy.eshop.user.registration.form.username}"></label>
+            <input type="text"
+                   class="form-control"
+                   th:field="*{username}"
+                   th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : (${userRegistration.username ne null} ? 'is-valid' : '')">
+            <p th:if="${#fields.hasErrors('username')}"
+               th:errors="*{username}"
+               th:class="invalid-feedback"></p>
+        </div>
 
-    <form>
-        <input type="text" name="userName" placeholder="Name" class="form-control mt-2">
-        <input type="text" name="surname" placeholder="Surname" class="form-control mt-2">
-        <input type="email" name="email" placeholder="Email" class="form-control mt-2">
-        <input type="password" name="password" placeholder="Password" class="form-control mt-2">
-        <input type="repeatPassword" name="repeatPassword" placeholder="Repeat your password" class="form-control mt-2">
-        <input type="submit" value="Submit" class="btn btn-success mt-3">
+        <div class="mb-3">
+            <label class="form-label" th:text="#{lt.codeacademy.eshop.user.registration.form.surname}"></label>
+            <input type="text"
+                   class="form-control"
+                   th:field="*{surname}"
+                   th:classappend="${#fields.hasErrors('surname')} ? 'is-invalid' : (${userRegistration.surname ne null} ? 'is-valid' : '')">
+            <p th:if="${#fields.hasErrors('surname')}"
+               th:errors="*{surname}"
+               th:class="invalid-feedback"></p>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" th:text="#{lt.codeacademy.eshop.user.registration.form.country}"></label>
+            <input type="text"
+                   class="form-control"
+                   th:field="*{country}"
+                   th:classappend="${#fields.hasErrors('country')} ? 'is-invalid' : (${userRegistration.country ne null} ? 'is-valid' : '')">
+            <p th:if="${#fields.hasErrors('country')}"
+               th:errors="*{country}"
+               th:class="invalid-feedback"></p>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" th:text="#{lt.codeacademy.eshop.user.registration.form.city}"></label>
+            <input type="text"
+                   class="form-control"
+                   th:field="*{city}"
+                   th:classappend="${#fields.hasErrors('city')} ? 'is-invalid' : (${userRegistration.city ne null} ? 'is-valid' : '')">
+            <p th:if="${#fields.hasErrors('city')}"
+               th:errors="*{city}"
+               th:class="invalid-feedback"></p>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" th:text="#{lt.codeacademy.eshop.user.registration.form.street}"></label>
+            <input type="text"
+                   class="form-control"
+                   th:field="*{street}"
+                   th:classappend="${#fields.hasErrors('street')} ? 'is-invalid' : (${userRegistration.street ne null} ? 'is-valid' : '')">
+            <p th:if="${#fields.hasErrors('street')}"
+               th:errors="*{street}"
+               th:class="invalid-feedback"></p>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" th:text="#{lt.codeacademy.eshop.user.registration.form.zipCode}"></label>
+            <input type="text"
+                   class="form-control"
+                   th:field="*{zipCode}"
+                   th:classappend="${#fields.hasErrors('zipCode')} ? 'is-invalid' : (${userRegistration.zipCode ne null} ? 'is-valid' : '')">
+            <p th:if="${#fields.hasErrors('zipCode')}"
+               th:errors="*{zipCode}"
+               th:class="invalid-feedback"></p>
+        </div>
+
+
+        <div class="mb-3">
+            <label class="form-label" th:text="#{lt.codeacademy.eshop.user.registration.form.phone}"></label>
+            <input type="text"
+                   class="form-control"
+                   th:field="*{phone}"
+                   th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid' : (${userRegistration.phone ne null} ? 'is-valid' : '')">
+            <p th:if="${#fields.hasErrors('phone')}"
+               th:errors="*{phone}"
+               th:class="invalid-feedback"></p>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" th:text="#{lt.codeacademy.eshop.user.registration.form.password}"></label>
+            <input type="password"
+                   class="form-control"
+                   th:field="*{password}"
+                   th:classappend="${#fields.hasErrors('password') || #fields.hasErrors('global')} ? 'is-invalid' : (${userRegistration.password ne null} ? 'is-valid' : '')">
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback"></p>
+            <p th:if="${#fields.hasErrors('global')}" th:errors="*{global}" class="invalid-feedback"></p>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" th:text="#{lt.codeacademy.eshop.user.registration.form.repeatPassword}"></label>
+            <input type="repeatPassword"
+                   class="form-control"
+                   th:field="*{repeatPassword}"
+                   th:classappend="${#fields.hasErrors('repeatPassword') || #fields.hasErrors('global')} ? 'is-invalid' : (${userRegistration.repeatPassword ne null} ? 'is-valid' : '')">
+            <p th:if="${#fields.hasErrors('repeatPassword')}" th:errors="*{password}" class="invalid-feedback"></p>
+            <p th:if="${#fields.hasErrors('global')}" th:errors="*{global}" class="invalid-feedback"></p>
+        </div>
+        <button class="btn btn-outline-primary" type="submit" th:text="#{lt.codeacademy.eshop.user.registration.form.create.button}"></button>
+
     </form>
-
 </div>
-
-<footer>
-    <div class=" bg-dark text-white">
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
-            <div class="col-md-4 d-flex align-items-center">
-                <a href="/" class="mb-3 me-2 mb-md-0 text-white text-decoration-none lh-1">
-                    <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-                </a>
-                <span class="text-white">© 2021 DogBlog, Inc</span>
-            </div>
-
-            <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-                <li class="ms-3"><a class="text-white" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
-                <li class="ms-3"><a class="text-white" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
-                <li class="ms-3"><a class="text-white" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
-            </ul>
-        </footer>
-    </div>
+<footer th:replace="fragments/fragments :: footer">
 </footer>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" class="h-100">
 <head th:replace="fragments/fragments :: head(#{blog.title})"></head>
-<body>
+<body class="h-100">
 <header th:replace="fragments/fragments :: header">
 </header>
-<main>
-    <div class="container">
+<main class="h-100">
+    <div class="container h-100">
         <h1 class="text-center mt-5" th:text="#{blog.title}"></h1>
         <div class="row mt-5">
             <div class="col-2"><img style="height: 150px; width: 150px" th:src="@{/img/dog1.jpg}" alt="dog-img">
@@ -13,22 +13,39 @@
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
     0+</span>
                 </button>
-                <button type="button" class="btn btn-secondary"><a href=comment.html class="text-white text-decoration-none"><i class="bi bi-chat-left-text me-1"></i> Comment</a></button>
+                <div th:text="#{comment.logged.users.comment}"></div>
+                <div th:replace="fragments/fragments :: primaryAlert(${success ne null}, ${success})"></div>
+                <button type="button" class="btn btn-secondary" >
+                    <a th:href="@{/private/comments/create}" class="text-white text-decoration-none">
+                    <i class="bi bi-chat-left-text me-2" ></i>
+                    <span th:text="#{comment.comment}"></span>
+                    </a >
+                </button>
 
             </div>
-
-            <div class="col-10">What is a domestic dog?
-                The term “domestic dog” refers to any of several hundred breeds of dog in the world today. While these animals vary drastically in appearance, every dog—from the Chihuahua to the Great Dane—is a member of the same species, Canis familiaris. This separates domestic dogs from wild canines, such as coyotes, foxes, and wolves.<br>
-                <h5>Comments:</h5>
-                <div th:if ="${#lists.isEmpty(comments)}" class="text-danger">No comments, be first and comment :) </div>
-                <div th:unless="${#lists.isEmpty(comments)}">
+            <div class="col-10">
+                <div th:text="#{blog.text}"></div>
+                <h5 th:text="#{blog.comments.comments}"></h5>
+                <div class= "text-primary fs-5" ><span th:text="#{blog.comments.total} + ' ' + ${pageOfComments.totalElements}"></span></div>
+                <div th:if ="${not pageOfComments.hasContent()}" class="text-danger" th:text="#{comment.comment.no.comments}"> </div>
+                <div th:if="${pageOfComments.hasContent()}">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-filter-left me-2"></i>
+                            <span th:text="#{comment.comment.sort}"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" th:href="@{/public/comments(sort='commentDate,ASC')}" th:text="#{comment.comments.older.to.newer}"></a></li>
+                            <li><a class="dropdown-item" th:href="@{/public/comments(sort='commentDate,DESC')}" th:text="#{comment.comment.newer.to.older}"></a></li>
+                        </ul>
+                    </div>
                     <div class="container">
-                        <div  th:each="comment : ${comments}">
+                        <div  th:each="comment : ${pageOfComments.content}">
                             <div class="row mt-2" >
                                 <div class="col-1">
                                     <div class="row" >
                                         <div class="col-12">
-                                        <a th:href="@{/comments/userName/{name}(name=${comment.userName})}" class="col-12 badge bg-warning rounded-circle text-wrap text-dark m-auto" style="height: 50px; width: 50px" th:text="${comment.userName}">
+                                        <a th:href="@{/public/comments/userName/{name}(name=${comment.userName})}" class="col-12 badge bg-warning rounded-circle text-wrap text-dark m-auto" style="height: 50px; width: 50px" th:text="${comment.userName}">
                                         </a></div>
                                     <div class="col-12" th:text="${comment.commentDate}"></div>
                                     </div>
@@ -37,8 +54,8 @@
                                 </div>
                             </div>
                             <div class="col offset-md-10 btn-group d-grid gap-2 d-md-flex justify-content-md-end" >
-                                <a th:href="@{/comments/update(id=${comment.id})}" class="btn btn-outline-primary" th:text="#{blog.comment.update}"></a>
-                                <a th:href="@{/comments/{id}/delete(id=${comment.id})}" class="btn btn-outline-danger" th:text="#{blog.comment.delete}"></a>
+                                <a th:href="@{/private/comments/update(id=${comment.id})}" class="btn btn-outline-primary" th:text="#{blog.comment.update}"></a>
+                                <a th:href="@{/private/comments/{id}/delete(id=${comment.id})}" class="btn btn-outline-danger" th:text="#{blog.comment.delete}"></a>
                             </div>
 
                         </div>
@@ -47,29 +64,36 @@
                         <div class="row mt-2">
                             <div class="col offset-md-6">
                                 <nav aria-label="Page navigation example">
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Previous">
+                                    <ul class="pagination"
+                                    th:with="order=${pageOfComments.sort.toList().get(0)},
+                                    sort=${order.property + ',' + order.direction}">
+                                        <li class="page-item "
+                                        th:classappend="${pageOfComments.number eq 0 ? 'disabled' : ''}">
+                                            <a class="page-link"
+                                               aria-label="Previous"
+                                               th:href="@{/public/comments(page=${pageOfComments.number} - 1,sort=${sort})}">
                                                 <span aria-hidden="true">&laquo;</span>
                                             </a>
                                         </li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-<!--                                        <li class="page-item"-->
-<!--                                            th:each="pageNumb: ${#numbers.sequence(1, pageOfComments.totalPages)}">-->
-<!--                                            <a class="page-link"-->
-<!--                                               th:href="@{/comments(page=${pageNumb}-1)}"-->
-<!--                                               th:text="${pageNumb}"></a>-->
-<!--                                        </li>-->
+                                        <li class="page-item"
+                                            th:each="pageNumb: ${#numbers.sequence(0, pageOfComments.totalPages - 1)}"
+                                            th:classappend="${pageNumb eq pageOfComments.number} ? 'active' : ''">
+                                            <a class="page-link"
+                                               th:href="@{/public/comments(page=${pageNumb},sort=${sort})}"
+                                               th:text="${pageNumb} + 1"></a>
+                                        </li>
 
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Next">
+                                        <li class="page-item"
+                                        th:classappend="${pageOfComments.number eq pageOfComments.totalPages - 1 ? 'disabled' : ''}">
+                                            <a class="page-link" href="#" aria-label="Next"
+                                               th:href="@{/public/comments(page=${pageOfComments.number} + 1,sort=${sort})}">
                                                 <span aria-hidden="true">&raquo;</span>
                                             </a>
                                         </li>
                                     </ul>
                                 </nav>
                             </div>
-                            <!--                        <div class="col-3 fs-5"><span th:text="#{lt.codeacademy.eshop.products.table.total} + ${pageOfProducts.totalElements}"></span>Total comments: 0</div>-->
+
                         </div>
                     </div>
                 </div>
@@ -80,26 +104,7 @@
 
 </main>
 
-<footer>
-    <div class=" bg-dark text-white">
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
-            <div class="col-md-4 d-flex align-items-center">
-                <a href="/" class="mb-3 me-2 mb-md-0 text-white text-decoration-none lh-1">
-                    <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-                </a>
-                <span class="text-white">© 2021 DogBlog, Inc</span>
-            </div>
-
-            <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-                <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
-                <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
-                <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
-            </ul>
-        </footer>
-    </div>
+<footer th:replace="fragments/fragments :: footer">
 </footer>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>

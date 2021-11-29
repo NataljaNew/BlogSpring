@@ -23,7 +23,7 @@ public class CommentService {
 
     public void saveComment(Comment comment){
         Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         comment.setCommentDate(formatter.format(date));
         commentRepository.save(comment);
     }
@@ -37,11 +37,16 @@ public class CommentService {
     }
 
     public void updateComment(Comment comment){
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        comment.setCommentDate(formatter.format(date));
         commentRepository.save(comment);
     }
     public void deleteComment(UUID id){
+
         commentRepository.deleteById(id);
     }
+
     public List<Comment> getAllCommentsByUserName( String userName){
         return commentRepository.findAllByUserName(userName);
     }
